@@ -1,0 +1,16 @@
+p
+  label(for='title') Title
+  input#title(type="text", name="title" value=book.title)
+p
+  label(for='author') Author
+  input#author(type="text", name="author" value=book.author)
+p
+  label(for='genre') Genre
+  input#genre(type="text", name="genre" value=book.genre)
+p
+  label(for='year') Year
+  input#year(type="text", name="year" value=book.year)
+p
+  input(type='submit' value='Create New Book')
+p
+  a.button(href='/books') Cancel

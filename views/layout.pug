@@ -1,0 +1,20 @@
+doctype html
+head
+  title= title
+  link(href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh", crossorigin="anonymous")
+  link(href='/stylesheets/style.css' rel='stylesheet')
+body
+nav.navbar.fixed-top.navbar-dark.bg-dark
+  a.navbar-brand(href="/") k-boox library manager
+  form.form-inline
+    input.form-control.mr-sm-2(type='search' placeholder='Search' aria-label='Search')
+    button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
+div.container.main
+  block content
+hr  
+footer.text-muted.dark
+  .container.flex
+    p.float-right
+      a(href='#') Back to top
+    p 
+      strong I like big books and I can not lie!
