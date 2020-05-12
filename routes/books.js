@@ -72,7 +72,7 @@ router.get('/search/:term', asyncHandler(async (req, res) => {
         {genre:  {[Op.like]: '%' + req.params.term + '%' }}, 
         {title: {[Op.like]: '%' + req.params.term + '%' }},
         {author: {[Op.like]: '%' + req.params.term + '%' }},
-        {year: req.params.term },
+        {year: {[Op.like]: '%' + req.params.term + '%' }},
       ]
     }
   })
