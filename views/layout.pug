@@ -7,8 +7,11 @@ body
 nav.navbar.fixed-top.navbar-dark.bg-dark
   a.navbar-brand(href="/") k-boox library manager
   form.form-inline
-    input.form-control.mr-sm-2(type='search' placeholder='Search' aria-label='Search')
-    button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
+    input.form-control.mr-sm-2(type='search' 
+                              id="searchInput" 
+                              placeholder='Search' 
+                              aria-label='Search' )
+    button.btn.btn-outline-success.my-2.my-sm-0(id="searchButton") Search
 div.container.main
   block content
 hr  
@@ -18,3 +21,5 @@ footer.text-muted.dark
       a(href='#') Back to top
     p 
       strong I like big books and I can not lie!
+
+script(src="/javascripts/script.js")

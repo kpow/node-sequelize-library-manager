@@ -10,10 +10,13 @@ block content
         th Author
         th Genre
         th Year
-    each book in books
-      tr
-        td
-          a(href = "/books/" + book.id)= book.title
-        td= book.author
-        td= book.genre
-        td= book.year
+    if books.length > 1   
+      each book in books
+        tr
+          td
+            a(href = "/books/" + book.id)= book.title
+          td= book.author
+          td= book.genre
+          td= book.year
+    else
+  //- h2 No matches try again    
