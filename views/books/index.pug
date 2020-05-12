@@ -10,7 +10,6 @@ block content
         th Author
         th Genre
         th Year
-    if books.length > 1   
       each book in books
         tr
           td
@@ -18,5 +17,5 @@ block content
           td= book.author
           td= book.genre
           td= book.year
-    else
-  //- h2 No matches try again    
+  if books.length < 1   
+    h2 No matches try again    

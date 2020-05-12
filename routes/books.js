@@ -69,19 +69,29 @@ router.get('/search/:term', asyncHandler(async (req, res) => {
   const books = await Book.findAll({
     where: {
       [Op.or]: [
-        {genre:  {[Op.like]: '%' + req.params.term + '%' }}, 
+        {genre:  {[Op.like]: '%' + req.params.term + '%' }},
         {title: {[Op.like]: '%' + req.params.term + '%' }},
         {author: {[Op.like]: '%' + req.params.term + '%' }},
         {year: {[Op.like]: '%' + req.params.term + '%' }},
       ]
     }
   })
+  
   if(books) {
     res.render("books/index", { books, title: "Library Manager" });
   } else {
+    res.render('error', {error:{status:500}});
+  }
+}));
+
+/* Edit book form. */
+router.post("/search", asyncHandler(async(req, res) => {
+  if(req.body.term) {
+    res.redirect("search/"+req.body.term); 
+  } else {
+    // need better error statew for no search term
     res.render('error', {error:{status:404}});
   }
-  
 }));
 
 
