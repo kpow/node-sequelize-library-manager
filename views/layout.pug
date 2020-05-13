@@ -5,15 +5,15 @@ head
   link(href='/stylesheets/style.css' rel='stylesheet')
 body
 nav.navbar.fixed-top.navbar-dark.bg-dark
-  a.navbar-brand(href="/") k-boox library manager
-  //- form.form-inline
-  form.form-inline(method="post" action="/books/search")
-    input.form-control.mr-sm-2(type='search' 
-                              id="searchInput" 
-                              name="term"
-                              placeholder='Search' 
-                              aria-label='Search' )
-    button.btn.btn-outline-success.my-2.my-sm-0(id="searchButton") Search
+  div.container
+    a.navbar-brand(href="/") k-books library manager
+    form.form-inline(method="post" action="/books/search")
+      input.form-control.mr-sm-2(type='search' 
+                                id="searchInput" 
+                                name="term"
+                                placeholder='Search' 
+                                aria-label='Search' )
+      button.btn.btn-outline-success.my-2.my-sm-0(id="searchButton") Search
 div.container.main
   block content
 hr  

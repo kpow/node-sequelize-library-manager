@@ -35,11 +35,9 @@ app.use( (err, req, res, next) => {
   
   if(req.app.get('env') === 'development'){
     res.locals.error = err
-    //console.log(err)
   }else{
     res.locals.error = {}
   }
-  
 
   // render the error page
   res.status(err.status || 500);

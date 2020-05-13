@@ -5,6 +5,11 @@ const Op = Sequelize.Op;
 
 const Book = require('../models').Book;
 
+const pageLimit = 5;
+let currentPage = 0;
+let currentOffset = 0;
+let totalPageCount = 0;
+
 /* Handler function to wrap each route. */
 function asyncHandler(cb){
   return async(req, res, next) => {
@@ -18,8 +23,18 @@ function asyncHandler(cb){
 
 /* GET books listing. */
 router.get('/', asyncHandler(async (req, res) => {
-  const books = await Book.findAll({ order:[['createdAt',"DESC"]] });
-  res.render("books/index", { books, title: "Library Manager" });
+  const { count } = await Book.findAndCountAll();
+  currentPage = 1
+  totalPageCount = Math.ceil(count/pageLimit)
+  res.redirect("books/page/1")
+ 
+}));
+
+router.get('/page/:page', asyncHandler(async (req, res) => {
+  currentPage = req.params.page
+  currentOffset = (currentPage-1)*pageLimit;
+  const books = await Book.findAll({ order:[['year',"DESC"]],limit:pageLimit, offset:currentOffset });
+  res.render("books/index", { books, currentPage, totalPageCount });
 }));
 
 /* Create a new book form. */
@@ -65,8 +80,14 @@ router.get("/:id", asyncHandler(async (req, res) => {
 
 
 /* search books listing. */
-router.get('/search/:term', asyncHandler(async (req, res) => {
-  const books = await Book.findAll({
+router.get('/search/:term/:page?', asyncHandler(async (req, res) => {
+  
+  req.params.page ? currentPage = req.params.page : currentPage = 1
+  currentOffset = (currentPage-1)*pageLimit;
+
+  const {count, rows} = await Book.findAndCountAll({
+    order:[['year',"DESC"]],
+    limit:pageLimit, offset:currentOffset,
     where: {
       [Op.or]: [
         {genre:  {[Op.like]: '%' + req.params.term + '%' }},
@@ -76,9 +97,13 @@ router.get('/search/:term', asyncHandler(async (req, res) => {
       ]
     }
   })
-  
+
+  totalPageCount = Math.ceil(count/pageLimit)
+  const search = req.params.term;
+  const books = rows
+
   if(books) {
-    res.render("books/index", { books, title: "Library Manager" });
+    res.render("books/index", { books, search, currentPage, totalPageCount});
   } else {
     res.render('error', {error:{status:500}});
   }
@@ -87,7 +112,7 @@ router.get('/search/:term', asyncHandler(async (req, res) => {
 /* Edit book form. */
 router.post("/search", asyncHandler(async(req, res) => {
   if(req.body.term) {
-    res.redirect("search/"+req.body.term); 
+    res.redirect("search/"+req.body.term+"/1"); 
   } else {
     // need better error statew for no search term
     res.render('error', {error:{status:404}});

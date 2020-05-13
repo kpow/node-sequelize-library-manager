@@ -1,8 +1,23 @@
 extends ../layout
 
 block content
-  p
-   a.button(href="/books/new") Create New Book
+  div.controls
+    p
+      a.btn.btn-outline-success.my-2.my-sm-0(href="/books/new") Create New Book
+
+    if totalPageCount>1
+      p= `${currentPage} of ${totalPageCount}`
+      nav(aria-label='page navigation')
+        ul.pagination
+          - var n = 0;
+            while n < totalPageCount
+              - n++
+              li.page-item
+                if !search
+                  a.page-link(href=`/books/page/${n}`)= n
+                else if search  
+                  a.page-link(href=`/books/search/${search}/${n}`)= n 
+                              
   table
     thead
       tr
