@@ -1,7 +1,7 @@
 {
-  "name": "blog",
-  "version": "1.0.0",
-  "description": "A simple blog application",
+  "name": "kbooks",
+  "version": "0.0.1",
+  "description": "A book manager application",
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www"

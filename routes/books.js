@@ -5,6 +5,7 @@ const Op = Sequelize.Op;
 
 const Book = require('../models').Book;
 
+/* variables for pagination*/
 const pageLimit = 5;
 let currentPage = 0;
 let currentOffset = 0;
@@ -33,7 +34,7 @@ router.get('/', asyncHandler(async (req, res) => {
 router.get('/page/:page', asyncHandler(async (req, res) => {
   currentPage = req.params.page
   currentOffset = (currentPage-1)*pageLimit;
-  const books = await Book.findAll({ order:[['year',"DESC"]],limit:pageLimit, offset:currentOffset });
+  const books = await Book.findAll({ order:[['title',"ASC"]],limit:pageLimit, offset:currentOffset });
   res.render("books/index", { books, currentPage, totalPageCount });
 }));
 
@@ -49,11 +50,13 @@ router.post('/', asyncHandler(async (req, res) => {
     book = await Book.create(req.body);
     res.redirect("/");
   } catch (error) {
-    if(error.name === "SequelizeValidationError") { // checking the error
+    if(error.name === "SequelizeValidationError") { 
       book = await Book.build(req.body);
+      // displays validation error
       res.render("books/new", { book, errors: error.errors, title: "New Book" })
     } else {
-      throw error; // error caught in the asyncHandler's catch block
+      // this will push asynchandler function to error
+      throw error; 
     }  
   }
 }));
@@ -81,11 +84,12 @@ router.get("/:id", asyncHandler(async (req, res) => {
 /* search books listing. */
 router.get('/search/:term/:page?', asyncHandler(async (req, res) => {
   
+  // sets current page from url, if none goes to 1
   req.params.page ? currentPage = req.params.page : currentPage = 1
   currentOffset = (currentPage-1)*pageLimit;
 
   const {count, rows} = await Book.findAndCountAll({
-    order:[['year',"DESC"]],
+    order:[['title',"ASC"]],
     limit:pageLimit, offset:currentOffset,
     where: {
       [Op.or]: [
@@ -96,7 +100,7 @@ router.get('/search/:term/:page?', asyncHandler(async (req, res) => {
       ]
     }
   })
-
+  // figure out how many pages based on return and page limit
   totalPageCount = Math.ceil(count/pageLimit)
   const search = req.params.term;
   const books = rows
@@ -113,8 +117,7 @@ router.post("/search", asyncHandler(async(req, res) => {
   if(req.body.term) {
     res.redirect("search/"+req.body.term+"/1"); 
   } else {
-    // need better error statew for no search term
-    res.render('error', {error:{status:404}});
+    res.redirect("/"); 
   }
 }));
 
