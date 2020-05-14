@@ -4,7 +4,9 @@ This is a book manager CRUD app built in node.js with express.js and sequelize O
 
 ## Installation
 
-You need to have node and NPM to start this party run NPM to install dependencies
+You need to have node and NPM to start this party 
+
+Run NPM to install dependencies
 
 ```bash
 npm install
